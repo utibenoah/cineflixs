@@ -4,3 +4,10 @@
 
 
  **Cinefix is a restful api that allows users to get current movies**
+
+
+## File Structure
+
+## Installation
+
+## Usage
