@@ -17,10 +17,10 @@ Follow these steps to get the project running locally:
     git clone https://github.com/utibenoah/cineflixs.git
 
 2. **Navigate to repository:**
-    cd cineflixs
+    - cd cineflixs
 3.  **Install dependencies** 
-    npm install
+    - npm install
 4.  **Run Project:**
-    npm start
+    - npm start
 
 ## Usage
