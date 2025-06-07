@@ -20,7 +20,7 @@ Follow these steps to get the project running locally:
     ```bash
     cd cineflixs
 3.  **Install dependencies** 
-    - ```bash
+    ```bash
     npm install
 4.  **Run Project:**
     ```bash
