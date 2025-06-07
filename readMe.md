@@ -13,17 +13,17 @@ Follow these steps to get the project running locally:
 
 1. **Clone the repository:**
 
-   - ```bash
+   ```bash
     git clone https://github.com/utibenoah/cineflixs.git
 
 2. **Navigate to repository:**
-    - ```bash
+    ```bash
     cd cineflixs
 3.  **Install dependencies** 
     - ```bash
     npm install
 4.  **Run Project:**
-    - ```bash
+    ```bash
     npm start
 
 ## Usage
