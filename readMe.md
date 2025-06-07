@@ -32,3 +32,14 @@ Follow these steps to get the project running locally:
 ## Usage
 
 ### Base URL
+- http://127.0.0.1:3000/api/v1
+
+
+### Endpoints
+
+#### Get All Movies
+
+- **Description:** Fetches a list of all movies.
+- **Request:**
+  ```http
+  GET http://127.0.0.1:3000/api/v1/movies
