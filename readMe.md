@@ -44,9 +44,8 @@ Follow these steps to get the project running locally:
   ```http
   GET http://127.0.0.1:3000/api/v1/movies
 
-- **Response:**
+- **Response:**<br>
 
-    ```json
     {
     "id": "123",
     "title": "Inception",
