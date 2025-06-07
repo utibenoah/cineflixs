@@ -34,59 +34,10 @@ exports.getHighestRatedMovies = async (req, res) => {
 exports.getAllMovies=async (req,res)=>{
    try {
 
-let features=new ApiFeatures(MovieModel.find(),req.query).filter()
-
+let features=new ApiFeatures(MovieModel.find(),req.parsedQuery).filter().sort().limitFields().paginate()
 let movies=await features.query
-//SORTING
-// if (req.query.sort) {
-//     const sortBy=req.query.sort.split(',').join(' ')
-//     console.log(sortBy)
-//     query=MovieModel.find().sort(sortBy)
-   
-// }else{
-//     query=MovieModel.find().sort('-__v')
-// }
 
 
-// //LIMITING FIELDS
-// if (req.query.fields) {
-//     const fields=req.query.fields.split(',').join(' ')
-//     query=MovieModel.find().select(fields)
-   
-// }else{
-//     query=MovieModel.find().select('-__v')
-// }
-
-
-
-// //PAGINATION
-
-// const page=req.query.page*1 || 1
-//     const limit=req.query.limit*1 || 10
-//     //PAGE 1:1-10, PAGE 2:11-20, PAGE:3 21-30 ....
-//     let skip=(page-1)*limit
-//     query=query.skip(skip).limit(limit)
-
-// if(req.query.page){
-//     const countDoc= await MovieModel.countDocuments()
-//     if(skip >=countDoc){
-//         throw Error('No more movies')
-//     }
-// }
-
-
-
-
-// const movies= await query//querying database
-    
-
-    //check for no movies
-    if (!movies.length>0) {
-        return res.status(404).json({
-            status:'fail',
-            message:'No movies found'
-        })
-    }
 
     // return all movies
     res.status(200).json({
@@ -193,4 +144,27 @@ exports.deletMovie=async(req, res) => {
     }
 }
 
+
+//get movies statistics
+exports.getMoviesStats=async(req,res)=>{
+    try {
+        const stats=await MovieModel.aggregate([
+            {$match:{ratings:{$gte:5}}}
+        ])
+
+        res.status(200).json({
+            status:'sucess',
+            counts:stats.length,
+            data:{
+                stats
+            }
+       })
+        
+    } catch (err) {
+       res.status(404).json({
+            status:'fail',
+            message:err.message
+        }) 
+    }
+}
 

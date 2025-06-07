@@ -3,12 +3,18 @@ let express=require('express')
 let morgan=require('morgan')
 
 
+
 let moviesRouter= require('./Route/moviesRoutes')
 let app = express()
 
 
+//middleware 
+
+
 // MIDDLEWARE
 app.use(express.json())
+
+
 
 if (process.env.NODE_ENV==='development') {
     app.use(morgan('dev'))

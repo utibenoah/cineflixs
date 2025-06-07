@@ -5,16 +5,22 @@ let router=express.Router()
 
 
 let moviesController= require('../Controllers/moviesController')
+let queryUrlParams=require('../Middlewares/queryUrlParams')
 
 
 
 
 // ROUTE=HTTP METHOD+URL
+
+router.route("/movie-stats")
+            .get(moviesController.getMoviesStats)
+
+            
 router.route('/highest-rated-movies')
             .get(moviesController.getHighestRatedMovies)
 
 router.route('/')
-            .get(moviesController.getAllMovies)
+            .get(queryUrlParams,moviesController.getAllMovies)
             .post(moviesController.addMovie)
 
 
