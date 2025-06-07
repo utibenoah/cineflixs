@@ -9,5 +9,18 @@
 ## File Structure
 
 ## Installation
+Follow these steps to get the project running locally:
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/utibenoah/cineflixs.git
+
+2. **Navigate to repository:**
+    cd cineflixs
+3.  **Install dependencies** 
+    npm install
+4.  **Run Project:**
+    npm start
 
 ## Usage
