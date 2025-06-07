@@ -1,6 +1,9 @@
 # ![Alt Text](./assets/Cineflixs.png)
 
 ![Last Commit](https://img.shields.io/github/last-commit/utibenoah/cineflixs)
+![Node.js version](https://img.shields.io/badge/node-22.14.0-brightgreen)
+![Express version](https://img.shields.io/badge/express-5.1.0-brightgreen)
+
 
 
  **Cinefix is a restful api that allows users to get current movies**
