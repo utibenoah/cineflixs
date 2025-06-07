@@ -45,10 +45,12 @@ Follow these steps to get the project running locally:
   GET http://127.0.0.1:3000/api/v1/movies
 
 - **Response:**
-{
-  "id": "123",
-  "title": "Inception",
-  "year": 2010,
-  "director": "Christopher Nolan"
-}
+
+    ```json
+    {
+    "id": "123",
+    "title": "Inception",
+    "year": 2010,
+    "director": "Christopher Nolan"
+    }
 
