@@ -1,10 +1,7 @@
 # ![Alt Text](./assets/Cineflixs.png)
 
-![Last Commit](https://img.shields.io/github/last-commit/utibenoah/cineflixs)
 ![Node.js version](https://img.shields.io/badge/node-22.14.0-brightgreen)
 ![Express version](https://img.shields.io/badge/express-5.1.0-brightgreen)
-
-
 ![MongoDB](https://img.shields.io/badge/MongoDB-v8.0.0-brightgreen)
 ![Mongoose](https://img.shields.io/badge/Mongoose-v8.14.1-blue)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
