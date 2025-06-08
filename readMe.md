@@ -65,7 +65,10 @@ Follow these steps to get the project running locally:
 * [MongoDB](https://www.mongodb.com/) This is a free open source NOSQL document database with scalability and flexibility. Data are stored in flexible JSON-like documents.
 * [Mongoose ODM](https://mongoosejs.com/) This makes it easy to write MongoDB validation by providing a straight-forward, schema-based solution to model to application data.
 ### Authors
-* [Black Developa](https://github.com/blackdevelopa)
-* ![alt text](https://avatars0.githubusercontent.com/u/29962968?s=400&u=7753a408ed02e51f88a13a5d11014484bc4d80ee&v=4)
+* [Utibenoah](https://github.com/utibenoah)
+* # Welcome to My Profile
+
+![My Avatar](https://github.com/utibenoah.png)
+
 ### License
 This project is available for use under the MIT License.
