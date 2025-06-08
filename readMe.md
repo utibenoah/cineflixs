@@ -57,3 +57,15 @@ Follow these steps to get the project running locally:
     "director": "Christopher Nolan"
     }
 
+
+
+### Technologies Used
+* [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
+* [ExpressJS](https://www.expresjs.org/) This is a NodeJS web application framework.
+* [MongoDB](https://www.mongodb.com/) This is a free open source NOSQL document database with scalability and flexibility. Data are stored in flexible JSON-like documents.
+* [Mongoose ODM](https://mongoosejs.com/) This makes it easy to write MongoDB validation by providing a straight-forward, schema-based solution to model to application data.
+### Authors
+* [Black Developa](https://github.com/blackdevelopa)
+* ![alt text](https://avatars0.githubusercontent.com/u/29962968?s=400&u=7753a408ed02e51f88a13a5d11014484bc4d80ee&v=4)
+### License
+This project is available for use under the MIT License.
