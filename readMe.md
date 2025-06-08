@@ -66,7 +66,6 @@ Follow these steps to get the project running locally:
 * [Mongoose ODM](https://mongoosejs.com/) This makes it easy to write MongoDB validation by providing a straight-forward, schema-based solution to model to application data.
 ### Authors
 * [Utibenoah](https://github.com/utibenoah)
-* # Welcome to My Profile
 
 ![My Avatar](https://github.com/utibenoah.png)
 
