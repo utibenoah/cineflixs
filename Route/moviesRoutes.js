@@ -5,7 +5,7 @@ let router=express.Router()
 
 
 let moviesController= require('../Controllers/moviesController')
-let queryUrlParams=require('../Middlewares/queryUrlParams')
+let queryUrlParams=require('../Middlewares/queryUrlParamsMiddleware')
 
 
 

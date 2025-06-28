@@ -72,5 +72,4 @@ Follow these steps to get the project running locally:
 
 ![My Avatar](https://github.com/utibenoah.png)
 
-### License
-This project is available for use under the MIT License.
+

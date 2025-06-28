@@ -6,6 +6,8 @@ let movieSchema=new mongoose.Schema({
         type:String,
         required:[true,'Name is a required field'],
         unique:true,
+        maxlength:[100,"movie name must not have more than 100 characters"],
+        minlength:[4,"movie name must have aleast 4 characters"],
         trim:true
     },
     description:{
@@ -19,6 +21,12 @@ let movieSchema=new mongoose.Schema({
     },
     ratings:{
         type:Number,
+        validate:{
+            validator:(value)=>{
+            return value >=1 && value <= 10
+        },
+        message:"rating ({VALUE}) should be above and below 10"
+        }
     },
 
     totalRating:{
