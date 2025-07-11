@@ -66,7 +66,7 @@ exports.addMovie=asyncErrorHandler(async(req,res,next)=>{
     
         const movie= await MovieModel.create(req.body)
 
-        
+       
 
         res.status(201).json({
             status:'success',

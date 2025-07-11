@@ -45,6 +45,16 @@ let duplicatKeyErrorHandler=(error,req)=>{
     return error
 }
 
+let validationErrorHandler=(error,req)=>{
+    let errorMessages= Object.values(error.errors).map(val=>val.message)
+    errorMessages=errorMessages.join('. ')
+    let message= `Invalid iput error ${errorMessages}`
+
+    error=new AppError(message,'mongooosError(Validation error)',400,req.originalUrl,req.body,req.method)
+    return error
+
+}
+
 let globalErrorHandler=(error,req,res,next)=>{
     
     error.statusCode=error.statusCode || 500
@@ -55,17 +65,14 @@ let globalErrorHandler=(error,req,res,next)=>{
     }
 
     if(process.env.NODE_ENV==='production'){
-        let err = JSON.parse(JSON.stringify(error))//deep clone
         
         
-        if(error.name==='CastError'){
-           error= castErrorHandler(error,req)
-           
-        }
-        if(error.code===Number(11000)){
-           error= duplicatKeyErrorHandler(error,req)
-           
-        }
+        if(error.name==='CastError')error= castErrorHandler(error,req)
+   
+        if(error.code===11000)error= duplicatKeyErrorHandler(error,req)
+
+        if(error.name==='ValidationError')error= validationErrorHandler(error,req)
+        
         prodErrors(res,error)  
     }
     

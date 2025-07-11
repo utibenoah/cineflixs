@@ -8,6 +8,7 @@ let globalErrorHandler=require('./Middlewares/errorMiddleware')
 let AppError=require('./Utils/errorHandler')
 
 let moviesRouter= require('./Route/moviesRoutes')
+let authRouter=require('./Route/authRoutes')
 let app = express()
 
  
@@ -15,15 +16,7 @@ let app = express()
 
 // MIDDLEWARE
 app.use(express.json())
-// app.use((error,req,res,next)=>{
-//     error.statusCode=error.statusCode || 500
-//     error.status=error.status||'internal server error'
 
-//     res.status(error.statusCode).json({
-//         status:error.status,
-//         message:error.message
-//     })
-// })
 
 
 
@@ -38,8 +31,9 @@ app.use((req,res,next)=>{
 
 
 
-
+//Route
 app.use('/api/v1/movies',moviesRouter),
+app.use('/api/v1/users',authRouter)
 
 app.all('*catchall',(req,res,next)=>{
     //let err= new AppError('url not found','Not found',404,req.originalUrl,req.body)
