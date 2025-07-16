@@ -5,13 +5,13 @@ let dotenv=require('dotenv')
 
 dotenv.config({path:'./config.env'})
 
-process.on("uncaughtException", (error)=>{
-    console.log(error.name,error.message)
-    console.log("uncaught Exception shuting down")
+// process.on("uncaughtException", (error)=>{
+//     console.log(error.name,error.message)
+//     console.log("uncaught Exception shuting down")
     
-    process.exit(1)
+//     process.exit(1)
 
-})
+// })
 // IMPORT APP
 let app =require('./app')
 

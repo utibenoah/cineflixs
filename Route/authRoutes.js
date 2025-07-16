@@ -7,11 +7,6 @@ let authController=require('../Controllers/authController')
 
 
 
-// @desc    Get all users
-// @route   GET /api/users
-// @access  Public (can protect later)
-router.route('/')
-            .get(authController.getUser)
 
 
 

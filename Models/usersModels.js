@@ -21,12 +21,14 @@ let usersSchema=new mongoose.Schema({
     password:{
         type:String,
         required:[true,'Please enter a password'],
-        minlength:8
+        minlength:8,
+        select:false
     },
     
     confirm_password:{
         type:String,
         required:[true,'Please enter confirm password'],
+
         validator:{
             validator:function(val){ return val === this.password},
 
@@ -45,6 +47,11 @@ usersSchema.pre('save', async function(next){
     this.confirm_password=undefined;
     next()
 })
+
+//METHODS
+usersSchema.methods.comparePassword=async (inputPassword,userPasswordInDB)=>{
+   return await bcrypt.compare(inputPassword,userPasswordInDB)
+}
 
 // MODEL
 let usersModel=mongoose.model('users',usersSchema)
