@@ -7,11 +7,15 @@ const utils=require('util')
 const AppError=require('../Utils/errorHandler')
 
 
+
+
 let signInToken=(email)=>{
     return jwt.sign({email:email},process.env.SECRET_STR,{expiresIn:process.env.LOGIN_EXPIRES})
 
 }
 
+
+//SIGNUP ROUTE HANDLER
 exports.signUp=asyncErrorHandler(async (req,res,next)=>{
     let newUser= await UsersModel.create(req.body)
 
@@ -28,7 +32,7 @@ exports.signUp=asyncErrorHandler(async (req,res,next)=>{
 
 
 
-
+//LOGIN ROUTE HANDLER
 
 exports.login=asyncErrorHandler(async (req,res,next)=>{
     const {email,password}=req.body
@@ -78,6 +82,8 @@ let token=signInToken(user.email)
 })
 
 
+
+//PROTECTED ROUTE HANDLER
 exports.protected=asyncErrorHandler(async(req,res,next)=>{
     // get authoriZation token and check if exit
     let testToken=req.headers.authorization
@@ -87,16 +93,38 @@ exports.protected=asyncErrorHandler(async(req,res,next)=>{
     }
 
 
-    // validate token
+    
     if(!token){
        message='You are not logged in'
         error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
         return next(error) 
     }
-    
+    // validate token
     let decodeToken=await utils.promisify(jwt.verify)(token,process.env.SECRET_STR)
 
-    //
+    
+
+    //check if user exit
+    let user=await UsersModel.findOne({email:decodeToken.email})
+     if(!user){
+        message='User does not exit'
+        error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
+        return next(error)
+     }
+
+     // check if the user check password
+     
+     let isPasswordChange= user.isPasswordChange(decodeToken.iat)
+    
+     if(isPasswordChange){
+        message='Password was change. Login again'
+        error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
+        return next(error)
+     }
+
+     //allow user to access
+     req.user=user
+
     next()
 
 })
