@@ -29,7 +29,7 @@ router.route('/:id')
             .get(moviesController.getMovie)
             .patch(moviesController.updateMovieKey)
             .put(moviesController.updateMoviesKeys)
-            .delete(moviesController.deletMovie)
+            .delete(authController.protected,moviesController.deletMovie)
 
 
 module.exports=router

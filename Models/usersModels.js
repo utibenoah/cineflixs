@@ -18,6 +18,11 @@ let usersSchema=new mongoose.Schema({
     },
 
     photo: String,
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default:'user'
+    },
     password:{
         type:String,
         required:[true,'Please enter a password'],
@@ -58,9 +63,9 @@ usersSchema.methods.comparePassword=async (inputPassword,userPasswordInDB)=>{
 }
 
 //check for password change
-usersSchema.methods.isPasswordChange=async function(jwtTimeStamp){
+usersSchema.methods.isPasswordChange=function(jwtTimeStamp){
     if(this.passwordChangeAt){
-        let passwordChangeTimeStamp=(this.passwordChangeAt.getTime()/1000,10)
+        let passwordChangeTimeStamp=parseInt(this.passwordChangeAt.getTime()/1000,10)
         return jwtTimeStamp<passwordChangeTimeStamp
     }
 

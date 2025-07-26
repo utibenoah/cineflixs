@@ -128,3 +128,15 @@ exports.protected=asyncErrorHandler(async(req,res,next)=>{
     next()
 
 })
+
+exports.retricted=(role)=>{
+    return (req,res,next)=>{
+        let userRole=req.user.role
+        if(userRole !== role){
+            message='You do not have permission to perform this operation'
+            error=new AppError(message,'Forbidden',403,req.originalUrl,req.body,req.method)
+            return next(error)
+        }
+        next()
+    }
+}
