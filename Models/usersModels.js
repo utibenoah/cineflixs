@@ -1,6 +1,7 @@
 const mongoose=require('mongoose')
 const validator=require('validator')
 const bcrypt=require('bcryptjs')
+const crypto=require('crypto')
 
 //SCHEMA
 let usersSchema=new mongoose.Schema({
@@ -41,7 +42,10 @@ let usersSchema=new mongoose.Schema({
         }
     },
 
-    passwordChangeAt:Date
+    passwordChangeAt:Date,
+    passwordResetToken:String,
+    passwordResetTokenExpire:Date
+
 })
 
 
@@ -70,6 +74,17 @@ usersSchema.methods.isPasswordChange=function(jwtTimeStamp){
     }
 
     return false
+}
+
+usersSchema.methods.createPasswordResetToken=function(){
+    const resetToken=crypto.randomBytes(32).toString('hex')//generate token
+    this.passwordResetToken=crypto.createHash('sha256').update(resetToken).digest('hex')//send to db
+
+    this.passwordResetTokenExpire=Date.now() + 10*60*1000
+
+
+    return resetToken
+
 }
 
             // MODEL

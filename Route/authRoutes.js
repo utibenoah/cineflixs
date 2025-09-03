@@ -26,9 +26,23 @@ router.route('/signup')
 
 router.route('/login')
             .post(authController.login)
-        
+ 
+            
+// @desc    Forget password
+// @route   POST /api/users/forgetpassword
+// @access  Public
+
+router.route('/forgot-password')
+            .post(authController.forgotPassword)
 
 
+
+// @desc    Rest password
+// @route   POST /api/users/reset-password
+// @access  Public
+
+router.route('/resetpassword/:token')
+            .patch(authController.resetPassword)
 
 
 
