@@ -7,9 +7,6 @@ const emailSendingHandler=require('../Utils/emailSendingHandler')
 const jwt=require('jsonwebtoken')
 const utils=require('util')
 const AppError=require('../Utils/errorHandler')
-const { console } = require('inspector')
-
-
 
 
 let signInToken=(email)=>{
@@ -17,19 +14,43 @@ let signInToken=(email)=>{
 
 }
 
+let createSendResponse=(user,statusCode,message,res)=>{
+    let token=signInToken(user.email)
+    user.password=undefined
+    user.passwordChangeAt=undefined
+    user.role=undefined
 
-//SIGNUP ROUTE HANDLER
-exports.signUp=asyncErrorHandler(async (req,res,next)=>{
-    let newUser= await UsersModel.create(req.body)
 
-    let token=signInToken(newUser.email)
+    //set cookies
+        let options={
+            maxAge:process.env.LOGIN_EXPIRES,
+            httpOnly:true
+        }
 
-    res.status(201).json({
+        if(process.env.NODE_ENV==='production'){
+            options.secure=true
+        }
+
+    res.cookie('jwt',token,options)
+    res.status(statusCode).json({
         status:"sucesss",
-        message:"user created",
-        token
+        message:message,
+        token,
+        data:{
+            user
+        }
         
     })
+
+}
+
+
+
+//SIGNUP ROUTE HANDLER
+exports.signUp=asyncErrorHandler(async (req,res)=>{
+    let newUser= await UsersModel.create(req.body)
+
+    createSendResponse(newUser,201,'User created',res)
 
 })
 
@@ -74,14 +95,8 @@ exports.login=asyncErrorHandler(async (req,res,next)=>{
 
 
 
-let token=signInToken(user.email)
+createSendResponse(user,200,'User login successfully',res)
 
-
-    res.status(200).json({
-        status:'success',
-        message:'User login successfully',
-        token
-    })
 })
 
 
@@ -98,20 +113,19 @@ exports.protected=asyncErrorHandler(async(req,res,next)=>{
 
     
     if(!token){
-       message='You are not logged in'
-        error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
+       let message='You are not logged in'
+       let error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
         return next(error) 
     }
     // validate token
     let decodeToken=await utils.promisify(jwt.verify)(token,process.env.SECRET_STR)
 
-    
 
     //check if user exit
     let user=await UsersModel.findOne({email:decodeToken.email})
      if(!user){
-        message='User does not exit'
-        error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
+       let  message='User does not exit'
+        let error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
         return next(error)
      }
 
@@ -120,8 +134,8 @@ exports.protected=asyncErrorHandler(async(req,res,next)=>{
      let isPasswordChange= user.isPasswordChange(decodeToken.iat)
     
      if(isPasswordChange){
-        message='Password was change. Login again'
-        error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
+        let message='Password was change. Login again'
+        let error=new AppError(message,'Unauthorized',401,req.originalUrl,req.body,req.method)
         return next(error)
      }
 
@@ -138,8 +152,8 @@ exports.restricted=(role)=>{
 
         //Error:if userRole is not equal to role
         if(userRole !== role){
-            message='You do not have permission to perform this operation'
-            error=new AppError(message,'Forbidden',403,req.originalUrl,req.body,req.method)
+            let message='You do not have permission to perform this operation'
+            let error=new AppError(message,'Forbidden',403,req.originalUrl,req.body,req.method)
             return next(error)
         }
 
@@ -166,7 +180,8 @@ exports.forgotPassword=asyncErrorHandler(async (req,res,next)=>{
 
     // send token to user
     let resetUrl=`${req.protocol}://${req.get('host')}/api/v1/users/resetpassword/${token}`
-    let message=`We have received request to reset password \n\ Kindly ignore if you need not make this reauest \n\n\ Clicke the link below to reset password\n\n
+    let message=`We have received request to reset password \n  Kindly ignore if you need not make this reauest
+     Clicke the link below to reset password \n
     ${resetUrl}`
 
 
@@ -182,7 +197,7 @@ exports.forgotPassword=asyncErrorHandler(async (req,res,next)=>{
                 message:'Reset token send successfully. Kindly check your mail',
             })
 
-    } catch(error){
+    } catch{
         user.passwordResetToken=undefined
         user.passwordResetTokenExpire=undefined
 
@@ -191,9 +206,9 @@ exports.forgotPassword=asyncErrorHandler(async (req,res,next)=>{
 
         let message=`An error occurred while sending password reset token, please try again later`
         
-        err=new AppError(message,'Server error',500,req.originalUrl,req.body,req.method)
+        let error=new AppError(message,'Server error',500,req.originalUrl,req.body,req.method)
        
-        return next(err)
+        return next(error)
     }
 
 })
@@ -230,16 +245,14 @@ exports.resetPassword=asyncErrorHandler(async (req,res,next)=>{
    user.passwordResetTokenExpire=undefined
    user.passwordChangeAt=Date.now()
 
-   user.save()//save to database
+   await user.save()//save to database
 
 
-    let loginToken=signInToken(user.email)
-
-    res.status(200).json({
-        status:"sucesss",
-        message:"Login sucessfully",
-        token:loginToken
-        
-    })
+    createSendResponse(user,200,'User login successfully',res)
     
 })
+
+
+
+
+

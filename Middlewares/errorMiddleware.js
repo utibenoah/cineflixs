@@ -72,7 +72,7 @@ let jsonWebTokenError=(error,req)=>{
 
 }
 
-let globalErrorHandler=(error,req,res,next)=>{
+let globalErrorHandler=(error,req,res)=>{
     
     error.statusCode=error.statusCode || 500
     error.status=error.status||'internal server error'

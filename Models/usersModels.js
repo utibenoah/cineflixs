@@ -17,6 +17,11 @@ let usersSchema=new mongoose.Schema({
         lowercase:true,
         validator:[validator.isEmail, 'Please enter a valid email']
     },
+    active:{
+        type:Boolean,
+        default:true,
+        select:false
+    },
 
     photo: String,
     role:{
@@ -49,6 +54,7 @@ let usersSchema=new mongoose.Schema({
 })
 
 
+//middlewares
 usersSchema.pre('save', async function(next){
     if(!this.isModified('password')) {return next()}
 
@@ -59,7 +65,12 @@ usersSchema.pre('save', async function(next){
     next()
 })
 
-            //METHODS
+usersSchema.pre('find', async function(next){
+    this.find({active: {$ne:false}})
+    next()
+})
+
+//METHODS
 
 //compare password
 usersSchema.methods.comparePassword=async (inputPassword,userPasswordInDB)=>{

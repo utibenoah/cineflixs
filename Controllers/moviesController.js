@@ -62,7 +62,7 @@ exports.getMovie=asyncErrorHandler(async(req,res,next)=>{
 
 
 
-exports.addMovie=asyncErrorHandler(async(req,res,next)=>{
+exports.addMovie=asyncErrorHandler(async(req,res)=>{
     
         const movie= await MovieModel.create(req.body)
 
@@ -77,7 +77,7 @@ exports.addMovie=asyncErrorHandler(async(req,res,next)=>{
     
 })
 
-exports.updateMovieKey=asyncErrorHandler(async(req,res)=>{
+exports.updateMovieKey=asyncErrorHandler(async(req,res,next)=>{
     
        const updateMovieKey =await MovieModel.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true})
 
@@ -96,9 +96,9 @@ exports.updateMovieKey=asyncErrorHandler(async(req,res)=>{
    
 })
 
-exports.updateMoviesKeys=asyncErrorHandler((req,res)=>{
+// exports.updateMoviesKeys=asyncErrorHandler((req,res)=>{
    
-})
+// })
 
 exports.deletMovie=asyncErrorHandler(async(req, res) => {
        await MovieModel.findByIdAndDelete(req.params.id)

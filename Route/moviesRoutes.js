@@ -28,7 +28,6 @@ router.route('/')
 router.route('/:id')
             .get(moviesController.getMovie)//get movie with id
             .patch(moviesController.updateMovieKey)
-            .put(moviesController.updateMoviesKeys)
             .delete(authController.protected,authController.restricted('admin'),moviesController.deletMovie)
 
 
