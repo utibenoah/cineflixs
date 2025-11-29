@@ -14,6 +14,8 @@ let hpp=require('hpp')
 let moviesRouter= require('./Route/moviesRoutes')
 let authRouter=require('./Route/authRoutes')
 let userRouter=require('./Route/userRoutes')
+
+
 let app = express()
 
  
@@ -57,8 +59,7 @@ app.use('/api/v1/movies',moviesRouter),
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/user',userRouter)
 app.all('*catchall',(req,res,next)=>{
-    //let err= new AppError('url not found','Not found',404,req.originalUrl,req.body)
-
+    
     let error=new AppError('url not found','Not found',404,req.originalUrl,req.body,req.method)
     
     

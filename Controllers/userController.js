@@ -15,7 +15,7 @@ exports.getUsers=asyncErrorHandler(async(req,res,next)=>{
     let user= await UsersModel.find()
 
     //error: no user
-    if(!user){
+    if(!user || user.length===0){
         let message='Users not found'
         let error=new AppError(message,'Unauthorized',404,req.originalUrl,req.body,req.method)
         return next(error)

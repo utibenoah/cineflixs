@@ -3,7 +3,7 @@ class AppError extends Error{
         super(message)
         this.errorType=errorType
         this.statusCode=statusCode
-        this.status=statusCode >=400 && statusCode <=599 ? 'fail':'error'
+        this.status=statusCode >=400 && statusCode <=499 ? 'fail':'error'
         this.reqUrl=reqUrl
         this.reqBody= reqBody || {}
         this.reqMethod=reqMethod
