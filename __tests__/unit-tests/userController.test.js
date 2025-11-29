@@ -46,7 +46,7 @@ describe('Get all user',()=>{
 
 })
 
-describe.only('Update Password',()=>{
+describe('Update Password',()=>{
      let req,res,next,user
 
     beforeEach(()=>{
@@ -94,6 +94,8 @@ describe.only('Update Password',()=>{
 
         expect(next).not.toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledTimes(1)
+        const resStatus = res.status.mock.calls[0][0];
+        expect(resStatus).toBe(200)
         const response = res.json.mock.calls[0][0];
         expect(response.message).toBe('Login sucessfully');
     })
@@ -103,7 +105,9 @@ describe('UpdateMe',()=>{
     let req,res,next
 
     beforeEach(()=>{
-        req={body:{},
+        req={body:{name:'tester',
+            emaiil:'test@test.com'
+        },
         user:'testing@test.com'}
 
         res={
@@ -123,6 +127,7 @@ describe('UpdateMe',()=>{
         expect(next).toHaveBeenCalled()
         expect(next).toHaveBeenCalledTimes(1);
         const err = next.mock.calls[0][0];
+        expect(err.status).toBe('fail');
         expect(err.message).toBe('You can not update your password using this endpoint');
         const error = next.mock.calls[0][0];
         
@@ -146,6 +151,36 @@ describe('UpdateMe',()=>{
 
         expect(next).not.toHaveBeenCalled()
         expect(res.status).toHaveBeenCalled()
+    })
+})
+
+describe('deleteMe',()=>{
+     let req,res,next
+
+    beforeEach(()=>{
+        req={user:{email:'testing@test.com'}}
+
+        res={
+        status:jest.fn(function(){return this}),
+        json:jest.fn()
+
+    }
+        next=jest.fn()
+    })
+
+    it('',async()=>{
+        UsersModel.findOneAndUpdate=jest.fn(()=>{
+            return Promise.resolve([])
+        })
+
+        //act
+        await Controllers.deleteMe(req,res,next)
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        const resStatus = res.status.mock.calls[0][0];
+        expect(resStatus).toBe(204)
+
     })
 })
 
