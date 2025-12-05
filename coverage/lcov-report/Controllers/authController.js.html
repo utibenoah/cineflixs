@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.65% </span>
+                <span class="strong">83.39% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>199/253</span>
+                <span class='fraction'>211/253</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.15% </span>
+                <span class="strong">89.65% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/26</span>
+                <span class='fraction'>26/29</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.65% </span>
+                <span class="strong">83.39% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>199/253</span>
+                <span class='fraction'>211/253</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -351,8 +351,8 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -538,20 +538,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -608,9 +608,9 @@ let createSendResponse=(user,statusCode,message,res)=&gt;{
             httpOnly:true
         }
 &nbsp;
-        if(process.env.NODE_ENV==='production'){
-            options.secure=true
-        }
+        if(process.env.NODE_ENV==='production')<span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >            options.secure=true</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
 &nbsp;
     res.cookie('jwt',token,options)
     res.status(statusCode).json({
@@ -630,7 +630,7 @@ let createSendResponse=(user,statusCode,message,res)=&gt;{
 //SIGNUP ROUTE HANDLER
 exports.signUp=asyncErrorHandler(async (req,res)=&gt;{
     let newUser= await UsersModel.create(req.body)
-    process.env.NODE_ENV = 'production';    
+       
     createSendResponse(newUser,201,'User created',res)
 &nbsp;
 })
@@ -796,20 +796,20 @@ exports.forgotPassword=asyncErrorHandler(async (req,res,next)=&gt;{
 &nbsp;
 &nbsp;
 exports.resetPassword=asyncErrorHandler(async (req,res,next)=&gt;{
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    </span>
-<span class="cstat-no" title="statement not covered" >    let reqResetToken=req.params.token</span>
-<span class="cstat-no" title="statement not covered" >    let token=crypto.createHash('sha256').update(reqResetToken).digest('hex')</span>
-<span class="cstat-no" title="statement not covered" >   </span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    let user=await UsersModel.findOne({passwordResetToken:token})</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    //error checking</span>
-<span class="cstat-no" title="statement not covered" >    if (!user) {</span>
-<span class="cstat-no" title="statement not covered" >        let message=`Invalid password reset token`</span>
-<span class="cstat-no" title="statement not covered" >        let error=new AppError(message,'Forbidden',400,req.originalUrl,req.body,req.method)</span>
-<span class="cstat-no" title="statement not covered" >        return next(error)</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
+&nbsp;
+    
+    let reqResetToken=req.params.token
+    let token=crypto.createHash('sha256').update(reqResetToken).digest('hex')
+   
+&nbsp;
+    let user=await UsersModel.findOne({passwordResetToken:token})
+&nbsp;
+    //error checking
+    if (!user) {
+        let message=`Invalid password reset token`
+        let error=new AppError(message,'Forbidden',400,req.originalUrl,req.body,req.method)
+        return next(error)
+<span class="branch-0 cbranch-no" title="branch not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    let checkTokenExpirationTime=user.passwordResetTokenExpire&gt; Date.now()//check expiration time</span>
 <span class="cstat-no" title="statement not covered" >    </span>
@@ -844,7 +844,7 @@ exports.resetPassword=asyncErrorHandler(async (req,res,next)=&gt;{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-02T02:29:11.569Z
+                at 2025-12-05T02:38:19.604Z
             </div>
         <script src="../prettify.js"></script>
         <script>

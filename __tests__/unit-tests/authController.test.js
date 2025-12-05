@@ -4,6 +4,9 @@ const jwt=require('jsonwebtoken')
 const utils=require('util')
 let emailSendingHandler=require('../../Utils/emailSendingHandler')
 
+const crypto=require('crypto')
+
+
 jest.mock('../../Utils/asyncErrorHandler', () => {
   return fn => fn;  
 })
@@ -222,7 +225,7 @@ describe('Protected Route',()=>{
             }),
             json:jest.fn()
         },
-
+         Original_evn = process.env.NODE_ENV;
         next=jest.fn()
 
         user={
@@ -416,6 +419,51 @@ describe('Forgot password',()=>{
         
 
     })
+
+
+})
+
+
+describe('Reset password',()=>{
+    let req,res,next
+    beforeEach(()=>{
+        req={params:{token:'hbhbkkn34bhhfjfj'}}
+        res={
+            status:jest.fn(function(){return this}),
+            json:jest.fn()
+        }
+
+        next=jest.fn()
+    })
+
+    afterEach(() => {
+  jest.clearAllMocks();
+});
+
+
+
+    it('Should return 400 with: Invalid password reset token',async()=>{
+
+        //arrange
+
+        crypto.createHash=jest.fn(()=> {
+            return {update:jest.fn(function(){return this}),
+                   digest:jest.fn(()=>{return 'hdjd3445jjsksk'}) 
+                }
+        })
+        UsersModel.findOne=jest.fn(()=>{
+            return Promise.resolve(null)
+        })
+
+        //act
+        await Controllers.resetPassword(req,res,next)
+        
+
+        //assert
+        expect(res.status).not.toHaveBeenCalled()
+        expect(next).not.toHaveBeenCalled()
+    })
+
 
 
 })

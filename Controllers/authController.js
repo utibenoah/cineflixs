@@ -49,7 +49,7 @@ let createSendResponse=(user,statusCode,message,res)=>{
 //SIGNUP ROUTE HANDLER
 exports.signUp=asyncErrorHandler(async (req,res)=>{
     let newUser= await UsersModel.create(req.body)
-    process.env.NODE_ENV = 'production';    
+       
     createSendResponse(newUser,201,'User created',res)
 
 })
