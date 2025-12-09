@@ -234,7 +234,7 @@ exports.resetPassword=asyncErrorHandler(async (req,res,next)=>{
     
     if(!checkTokenExpirationTime){
         let message=`Password reset token has expire`
-        let error=new AppError(message,'Forbidden',400,req.originalUrl,req.body,req.method)
+        let error=new AppError(message,'Forbidden',403,req.originalUrl,req.body,req.method)
         return next(error)
     }
 

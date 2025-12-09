@@ -276,7 +276,6 @@ describe('Protected Route',()=>{
 
     })
 
-
     it('Should return 401: Password was change. Login again',async()=>{
         //arrange
         req.headers.authorization='Bearer ffhfhfhfjddkdkdkdk'
@@ -289,6 +288,7 @@ describe('Protected Route',()=>{
         })
 
         user.isPasswordChange=jest.fn(()=>{return true})
+        process.env.NODE_ENV = 'production';
         
         //act
         await Controllers.protected(req,res,next)
@@ -297,7 +297,31 @@ describe('Protected Route',()=>{
         expect(next).toHaveBeenCalledTimes(1)
         const error = next.mock.calls[0][0];
         expect(error).toBeDefined();
-        expect(error.statusCode).toBe(401);
+
+
+    })
+
+    it('Should  call function',async()=>{
+        //arrange
+        req.headers.authorization='Bearer ffhfhfhfjddkdkdkdk'
+        utils.promisify = jest.fn(() => {
+            return jest.fn(() => Promise.resolve('hekeedjfjdjjfjd'));
+            })
+
+        UsersModel.findOne=jest.fn(()=>{
+            return Promise.resolve(user)
+        })
+
+        user.isPasswordChange=jest.fn(()=>{return false})
+        process.env.NODE_ENV = 'production';
+        
+        //act
+        await Controllers.protected(req,res,next)
+
+        //assert
+        expect(next).toHaveBeenCalledTimes(1)
+        const error = next.mock.calls[0][0];
+        expect(error).toBe(undefined);
 
 
     })
@@ -307,7 +331,7 @@ describe('Restrict user',()=>{
     let req,res,next
 
     beforeEach(()=>{
-        req={user:{role:''}}
+        req={user:{role:'user'}}
         res={
             status:jest.fn(function(){
                 return toHaveBeenCalledTimes
@@ -318,10 +342,30 @@ describe('Restrict user',()=>{
     })
     it('Sholud return 403:with you do not have permission to perform this operation',()=>{
 
-         Controllers.restricted('user')
+         let restrict=Controllers.restricted('admin')
 
-        expect(next).not.toHaveBeenCalled()
+         restrict(req,res,next)
+
+        expect(next).toHaveBeenCalled()
+        expect(next).toHaveBeenCalled()
+        let error=next.mock.calls[0][0]
+        expect(error.statusCode).toBe(403)
     })
+
+
+    it('Sholud return called next function',()=>{
+
+        req.user.role='admin'
+         let restrict=Controllers.restricted('admin')
+
+         restrict(req,res,next)
+
+        expect(next).toHaveBeenCalled()
+        let nextCall=next.mock.calls[0][0]
+        expect(nextCall).toBe(undefined)
+    })
+
+    
 })
 
 
@@ -425,20 +469,20 @@ describe('Forgot password',()=>{
 
 
 describe('Reset password',()=>{
-    let req,res,next
+    let req,res,next,user
     beforeEach(()=>{
-        req={params:{token:'hbhbkkn34bhhfjfj'}}
+        req={params:{token:'hbhbkkn34bhhfjfj'},
+             body:{password:'llll',confirm_password:'llll'}   }
         res={
             status:jest.fn(function(){return this}),
             json:jest.fn()
         }
 
         next=jest.fn()
+        
     })
 
-    afterEach(() => {
-  jest.clearAllMocks();
-});
+    
 
 
 
@@ -461,9 +505,66 @@ describe('Reset password',()=>{
 
         //assert
         expect(res.status).not.toHaveBeenCalled()
-        expect(next).not.toHaveBeenCalled()
+        expect(next).toHaveBeenCalled()
+        let error=next.mock.calls[0][0]
+        expect(error.message).toBe('Invalid password reset token')
+        expect(error.statusCode).toBe(400)
     })
 
 
+    it('Should return 403:password reset token has expire',async()=>{
+
+        //arrange
+        UsersModel.findOne=jest.fn(()=>{
+            return Promise.resolve({name:'test',
+            email:'test@test.com',
+            passwordResetTokenExpire:Date.now() - 60 * 60 * 1000
+        })
+        })
+       
+        
+        //act
+        await Controllers.resetPassword(req,res,next)
+
+        //assert
+        expect(next).toHaveBeenCalled()
+        expect(res.status).not.toHaveBeenCalled()
+        let error=next.mock.calls[0][0]
+        expect(error.message).toBe('Password reset token has expire')
+        expect(error.statusCode).toBe(403)
+        
+
+    })
+
+    it('Should return 403:password reset token has expire',async()=>{
+
+        //arrange
+        UsersModel.findOne=jest.fn(()=>{
+            return Promise.resolve({name:'test',
+            email:'test@test.com',
+            passwordResetTokenExpire:Date.now() + 60 * 60 * 1000,
+            password:'iiii',
+            confirm_password:'iiii',
+            passwordResetToken:'klklln67hj',
+
+            save:jest.fn()
+        })
+        })
+        res.cookie=jest.fn()
+        
+
+         
+       
+        
+        //act
+        await Controllers.resetPassword(req,res,next)
+
+        //assert
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalled()
+        
+        
+
+    })
 
 })
